@@ -28,7 +28,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/labring/sealos/pkg/exec"
+	//"github.com/labring/sealos/pkg/exec"
 	"github.com/labring/sealos/pkg/utils/logger"
 )
 

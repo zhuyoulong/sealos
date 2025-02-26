@@ -62,8 +62,8 @@ func (w *wrap) Ping(host string) error {
 func (w *wrap) Cmd(host string, command string) ([]byte, error) {
 	if w.isLocal(host) {
 		// nosemgrep: go.lang.security.audit.dangerous-exec-command.dangerous-exec-command
-		//b, err := exec.Command("/bin/bash", "-c", command).CombinedOutput()
-		b, err := RunWithSudo("/bin/bash", "-c", command).CombinedOutput()
+		b, err := exec.Command("/bin/bash", "-c", command).CombinedOutput()
+		//b, err := RunWithSudo("/bin/bash", "-c", command).CombinedOutput()
 
 		return b, err
 	}

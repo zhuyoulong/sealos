@@ -1,3 +1,11 @@
+/*
+ * @Author: SRI-朱有龙 zhu.yl@newland.com.cn
+ * @Date: 2025-02-26 11:46:26
+ * @LastEditors: SRI-朱有龙 zhu.yl@newland.com.cn
+ * @LastEditTime: 2025-02-26 14:47:25
+ * @FilePath: \sealos\pkg\utils\exec\cmd.go
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // Copyright © 2021 Alibaba Group Holding Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +29,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/labring/sealos/pkg/exec"
 	strutil "github.com/labring/sealos/pkg/utils/strings"
 )
 
@@ -35,7 +44,8 @@ func CmdWithContext(ctx context.Context, name string, args ...string) error {
 
 func Output(name string, args ...string) ([]byte, error) {
 	// nosemgrep: go.lang.security.audit.dangerous-exec-command.dangerous-exec-command
-	cmd := exec.Command(name, args[:]...) // #nosec
+	// cmd := exec.Command(name, args[:]...) // #nosec
+	cmd := exec.RunWithSudo(name, args[:]...) // #nosec
 	return cmd.CombinedOutput()
 }
 

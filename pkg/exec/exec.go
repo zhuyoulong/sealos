@@ -62,10 +62,42 @@ func (w *wrap) Ping(host string) error {
 func (w *wrap) Cmd(host string, command string) ([]byte, error) {
 	if w.isLocal(host) {
 		// nosemgrep: go.lang.security.audit.dangerous-exec-command.dangerous-exec-command
-		b, err := exec.Command("/bin/bash", "-c", command).CombinedOutput()
+		//b, err := exec.Command("/bin/bash", "-c", command).CombinedOutput()
+		b, err := RunWithSudo("/bin/bash", "-c", command).CombinedOutput()
+
 		return b, err
 	}
 	return w.inner.Cmd(host, command)
+}
+
+func RunWithSudo(args ...string) *exec.Cmd {
+	// 自动判断是否需要 sudo
+	if needsSudo(args[0]) {
+		return exec.Command("sudo", args...)
+	}
+	return exec.Command(args[0], args[1:]...)
+}
+
+func needsSudo(command string) bool {
+	// 检查命令是否在系统保护路径中（如 /usr/sbin/）
+	protectedPaths := []string{"/usr/sbin", "/sbin"}
+	cmdPath, err := exec.LookPath(command)
+	if err != nil {
+		return false
+	}
+	for _, path := range protectedPaths {
+		if strings.HasPrefix(cmdPath, path) {
+			return true
+		}
+	}
+
+	// 检查已知需要 root 的命令（如 iptables、mount）
+	sudoRequiredCommands := map[string]bool{
+		"iptables": true,
+		"mount":    true,
+		"systemctl": true,
+	}
+	return sudoRequiredCommands[command]
 }
 
 func (w *wrap) CmdAsyncWithContext(ctx context.Context, host string, commands ...string) error {

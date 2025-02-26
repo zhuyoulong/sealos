@@ -30,6 +30,7 @@ import (
 	"github.com/spf13/pflag"
 	"golang.org/x/sync/errgroup"
 
+	"github.com/labring/sealos/pkg/exec"
 	"github.com/labring/sealos/pkg/utils/logger"
 	"github.com/labring/sealos/pkg/utils/maps"
 )
@@ -104,7 +105,8 @@ func newCreateCmd() *cobra.Command {
 				args = []string{shell}
 			}
 			// nosemgrep: go.lang.security.audit.dangerous-exec-command.dangerous-exec-command
-			cmd := exec.Command(args[0], args[1:]...)
+			// cmd := exec.Command(args[0], args[1:]...)
+			cmd := exec.RunWithSudo(args[0], args[1:]...)
 			cmd.Env = unshare.RootlessEnv()
 			cmd.Stdin = os.Stdin
 			cmd.Stdout = os.Stdout

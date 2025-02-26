@@ -29,7 +29,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/labring/sealos/pkg/exec"
 	strutil "github.com/labring/sealos/pkg/utils/strings"
 )
 

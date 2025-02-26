@@ -93,8 +93,8 @@ func needsSudo(command string) bool {
 
 	// 检查已知需要 root 的命令（如 iptables、mount）
 	sudoRequiredCommands := map[string]bool{
-		"iptables": true,
-		"mount":    true,
+		"iptables":  true,
+		"mount":     true,
 		"systemctl": true,
 	}
 	return sudoRequiredCommands[command]

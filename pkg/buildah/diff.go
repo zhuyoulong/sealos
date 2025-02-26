@@ -28,6 +28,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
+	"github.com/labring/sealos/pkg/exec"
 	"github.com/labring/sealos/pkg/utils/logger"
 )
 
@@ -302,6 +303,7 @@ func runDiff(c *cobra.Command, args []string, opts *diffOption) error {
 }
 
 func rerun(command string, args ...string) error {
+	//cmd := exec.Command("/proc/self/exe", append([]string{command}, args...)...)
 	cmd := exec.Command("/proc/self/exe", append([]string{command}, args...)...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin

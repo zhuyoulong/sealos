@@ -18,6 +18,7 @@ package initsystem
 
 import (
 	"fmt"
+	"github.com/labring/sealos/pkg/exec"
 	"os/exec"
 	"strings"
 
@@ -38,7 +39,8 @@ func (s *initSystem) ServiceEnable(service string) error {
 	cmd := s.InitSystem.EnableCommand(service)
 	parts := strings.Split(cmd, " ")
 	if parts[0] == "systemctl" {
-		if err := exec.Command("systemctl", "daemon-reload").Run(); err != nil {
+		//if err := exec.Command("systemctl", "daemon-reload").Run(); err != nil {
+		if err := exec.RunWithSudo("systemctl", "daemon-reload").Run(); err != nil {
 			return fmt.Errorf("failed to reload init system: %v", err)
 		}
 	}

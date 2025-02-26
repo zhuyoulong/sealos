@@ -44,8 +44,8 @@ func CmdWithContext(ctx context.Context, name string, args ...string) error {
 
 func Output(name string, args ...string) ([]byte, error) {
 	// nosemgrep: go.lang.security.audit.dangerous-exec-command.dangerous-exec-command
-	// cmd := exec.Command(name, args[:]...) // #nosec
-	cmd := exec.RunWithSudo(name, args[:]...) // #nosec
+	cmd := exec.Command(name, args[:]...) // #nosec
+	//cmd := exec.RunWithSudo(name, args[:]...) // #nosec
 	return cmd.CombinedOutput()
 }
 
